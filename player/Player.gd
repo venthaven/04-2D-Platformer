@@ -25,6 +25,7 @@ export var damagemod = 1
 export var tohit = 4
 export var hitsuccess = false
 
+var levelactive = false
 
 var animating = false
 
@@ -36,7 +37,7 @@ func _physics_process(_delta):
 	if direction > 0 and $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
 	Backup.position = position
 
-		
+
 
 func is_moving():
 	if Input.is_action_pressed("left") or Input.is_action_pressed("right"):
@@ -52,9 +53,17 @@ func _unhandled_input(event):
 	if event.is_action_pressed("right"):
 		direction = 1
 	if event.is_action_pressed("leveldam"):
-		pass
+		if levelactive == true:
+			damagemod = damagemod + 1
+			print(damagemod)
+			levelactive = false
+			$Levelmenu.visible = false
 	if event.is_action_pressed("levelhit"):
-		pass
+		if levelactive == true:
+			tohit = tohit - 1
+			print(tohit)
+			levelactive = false
+			$Levelmenu.visible = false
 
 func set_animation(anim):
 	animating = true
@@ -62,7 +71,9 @@ func set_animation(anim):
 	if $AnimatedSprite.frames.has_animation(anim): $AnimatedSprite.play(anim)
 	else: $AnimatedSprite.play()
 
-
+func levelup():
+	$Levelmenu.visible = true
+	levelactive = true
 
 func die():
 	Backup.current = true

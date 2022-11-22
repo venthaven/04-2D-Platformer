@@ -12,4 +12,6 @@ func start():
 
 func physics_process(_delta):
 	if not enemy.animating:
+		Global.xp_up()
+		
 		enemy.queue_free()
